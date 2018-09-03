@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AuthActivity"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/customizelogin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/log1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Connexion"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ffff"
+                android:textSize="23dp"
+                android:fontFamily="@font/caviardreamsbold"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Login"
+                android:layout_margin="20dp"
+                android:textColor="#ffff"
+                android:textColorHint="#ffff"
+                android:inputType="text"
+                android:id="@+id/loginEdit"
+                android:fontFamily="@font/caviardreamsbold"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="mot de passe"
+                android:layout_margin="20dp"
+                android:textColor="#ffff"
+                android:textColorHint="#ffff"
+                android:inputType="textPassword"
+                android:id="@+id/passwordEdit"
+                android:fontFamily="@font/caviardreamsbold"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valider"
+                android:layout_gravity="center"
+                android:textColor="#ffff"
+                android:id="@+id/validAuth"
+                android:background="@drawable/customizebutton"
+                android:fontFamily="@font/caviardreamsbold"
+                android:onClick="authentification"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

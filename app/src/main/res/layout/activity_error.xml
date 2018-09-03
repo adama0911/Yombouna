@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EndActivity"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="center"
+        android:src="@drawable/error"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="L'operation n'a pas abouti .veuillez reessayer ! "
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:textSize="30dp"
+        android:textColor="#36A9E0"
+        android:fontFamily="@font/caviardreamsbold"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="OK"
+        android:background="@drawable/customizebutton"
+        android:id="@+id/okerror"
+        android:onClick="okerror"
+        android:fontFamily="@font/caviardreamsbold"/>
+</LinearLayout>
