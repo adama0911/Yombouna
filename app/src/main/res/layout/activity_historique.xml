@@ -80,39 +80,34 @@
     </LinearLayout>
     <TableLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:stretchColumns="4"
         android:id="@+id/tableView">
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="10dp"
-            >
-            <TextView
-                android:text="Service"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:fontFamily="@font/caviardreamsbold"/>
-            <TextView
-                android:text="Telephone"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:fontFamily="@font/caviardreamsbold"/>
-            <TextView
-                android:text="Montant"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:fontFamily="@font/caviardreamsbold"/>
-            <TextView
-                android:text="Date"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:fontFamily="@font/caviardreamsbold"/>
-        </TableRow
-            >
+
 
 
     </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_marginTop="12dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:onClick="backPage"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/next"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:onClick="nextPage"/>
 
+    </LinearLayout>
 </LinearLayout>

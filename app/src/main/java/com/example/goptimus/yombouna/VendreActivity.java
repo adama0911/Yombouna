@@ -74,7 +74,7 @@ public class VendreActivity extends AppCompatActivity {
             return;
         }
 
-        if(Integer.parseInt(mnt) <= 0){
+        if(Integer.parseInt(mnt) <= 99){
             builder.setTitle("Erreur");
             builder.setMessage("Votre montant est incorrect !");
             builder.create().show();
@@ -138,7 +138,7 @@ public class VendreActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(VendreActivity.this,ErrorActivity.class);
                 startActivity(myIntent);
             }
-        }) {
+        }){
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {

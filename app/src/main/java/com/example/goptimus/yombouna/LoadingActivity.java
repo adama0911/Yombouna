@@ -52,8 +52,9 @@ public class LoadingActivity extends AppCompatActivity {
         extras = getIntent().getExtras();
         if (extras != null) {
             Log.d("extras","=======================+>extras");
-            resquest = extras.getString("key");
+            resquest = extras.getString("request");
             //The key argument here must match that used in the other activity
+
             JSONObject json = new JSONObject();
 
             try {
