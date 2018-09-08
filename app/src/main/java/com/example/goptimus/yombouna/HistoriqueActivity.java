@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,6 +55,8 @@ public class HistoriqueActivity extends AppCompatActivity {
     int indexHistory;
     int Maxrow = 5;
     String  targetDate = "";
+    AlertDialog connexionDialog;
+    String lastID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +137,9 @@ public class HistoriqueActivity extends AppCompatActivity {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
                     Log.d("indexHistory","----------------"+indexHistory+"------------------");
+                    Log.d("lastID","----------------"+lastID+"------------------");
+                    lastID = (jsonArray.getJSONObject(jsonArray.length() -1)).getString("id");
+                    Log.d("lastID","----------------"+lastID+"------------------");
 
                     for (int i = indexHistory, max = indexHistory + Maxrow, j= 0 ; (j < jsonArray.length() ) && (i < max); i++, j++){
                         JSONObject obj = jsonArray.getJSONObject(j);
@@ -164,6 +170,7 @@ public class HistoriqueActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
                 hideloadNext();
+                showConnextionWarning();
             }
         }){
 
@@ -229,12 +236,11 @@ public class HistoriqueActivity extends AppCompatActivity {
         }else{
             Log.d("Handle1","================++> [3]" );
 
-            JSONObject last = history.getJSONObject(history.length() - 1);
-            String id = last.getString("id");
 
             Map<String, String> post = new HashMap<>();
             post.put("token",tokenFinal);
-            post.put("lastId",id);
+            Log.d("lasId","----------------------"+lastID+"------------------");
+            post.put("lastId",lastID);
 
             if(post != null){
                 Log.d("POST","============>+++++++"+ post.toString());
@@ -283,6 +289,7 @@ public class HistoriqueActivity extends AppCompatActivity {
 
         builder.setView(v);
         dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
@@ -321,5 +328,26 @@ public class HistoriqueActivity extends AppCompatActivity {
             history.put(jsonValues.get(i));
         }
     }
+
+    public   void showConnextionWarning (){
+        builder.setTitle("Connexion");
+        LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.errorconnexion,null);
+        Button button = linearLayout.findViewById(R.id.errorconnexion);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connexionDialog.cancel();
+            }
+        });
+
+        builder.setView(linearLayout);
+        connexionDialog = builder.create();
+        connexionDialog.setCanceledOnTouchOutside(false);
+        connexionDialog.show();
+    }
+
+
+
 }
 

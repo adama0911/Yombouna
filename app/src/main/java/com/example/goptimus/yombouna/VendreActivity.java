@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -109,6 +110,9 @@ public class VendreActivity extends AppCompatActivity {
     public void   logout (View view){
         Intent myIntent = new Intent(VendreActivity.this,AuthActivity.class);
         startActivity(myIntent);
+
+       /* Map<String, String> postMap = new HashMap<>();
+        postMap.put("token",tokenFinal);*/
     }
 
     public void  salleCresh(String requestUrl, final Map<String, String> postMap) {
@@ -149,4 +153,70 @@ public class VendreActivity extends AppCompatActivity {
         //make the request to your server as indicated in your request url
         Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
     }
+
+    public void  accountAmountHandle(String requestUrl, final Map<String, String> postMap) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Volley Result", "=============>" + response); //the response contains the result from the server, a json string or any other object returned by your server
+                //builder.setTitle("response");
+                //builder.setMessage(response);
+                //builder.create().show();
+                TextView accountAmount = (TextView) findViewById(R.id.accountAmount);
+                accountAmount.setText("Caution : "+response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //..... Add as many key value pairs in the map as necessary for your request
+                return postMap;
+            }
+        };
+        //make the request to your server as indicated in your request url
+        Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
+    }
+
+    public void  accountAmount()
+    {
+        Map<String, String> postMap = new HashMap<>();
+        postMap.put("token",tokenFinal);
+
+        salleCresh(requestUrl,postMap);
+        accountAmountHandle(requestUrl, postMap);
+    }
+
+    public  void  logoutHandle (String requestUrl, final Map<String, String> postMap) {
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e("Volley Result", "=============>" + response); //the response contains the result from the server, a json string or any other object returned by your server
+                    //builder.setTitle("response");
+                    //builder.setMessage(response);
+                    //builder.create().show();
+                    Intent myIntent = new Intent(VendreActivity.this,AuthActivity.class);
+                    startActivity(myIntent);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    //..... Add as many key value pairs in the map as necessary for your request
+                    return postMap;
+                }
+            };
+            //make the request to your server as indicated in your request url
+            Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
+    }
+
 }

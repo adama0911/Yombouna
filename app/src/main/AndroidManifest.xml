@@ -22,7 +22,8 @@
         <activity android:name=".HistoriqueActivity" />
         <activity android:name=".LoadingActivity" />
         <activity android:name=".EndActivity" />
-        <activity android:name=".ErrorActivity"></activity>
+        <activity android:name=".ErrorActivity" />
+        <activity android:name=".ErrConnexionActivity"></activity>
     </application>
 
 </manifest>

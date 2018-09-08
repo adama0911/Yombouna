@@ -21,7 +21,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/avatar"/>
+                android:id="@+id/avatar"
+                />
 
             <LinearLayout
                 android:layout_width="113dp"
@@ -36,7 +37,8 @@
                     android:fontFamily="@font/caviardreamsbold"
                     android:gravity="center"
                     android:text="OM"
-                    android:textColor="#0000CD"/>
+                    android:textColor="#0000CD"
+                    android:layout_marginLeft="5dp"/>
 
                 <TextView
                     android:id="@+id/telephone"
