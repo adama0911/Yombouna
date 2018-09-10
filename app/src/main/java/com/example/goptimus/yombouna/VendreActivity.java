@@ -33,12 +33,19 @@ import java.util.zip.Inflater;
 
 public class VendreActivity extends AppCompatActivity {
     final String requestUrl = "http://51.254.200.129/backendprod/horsSentiersBattus/scripts/airtime/airtime.php";
+    final String requestUrlCaution = "http://51.254.200.129/backendprod/horsSentiersBattus/scripts/airtime/airtimeCaution.php";
     AlertDialog.Builder builder;
     EditText telEdit;
     EditText montantEdit;
     Button    valider ;
     LayoutInflater inflater;
     String tokenFinal = "4cd6526371c082310bb1ff05affe63eb3f84ea457";
+    int globalCaution = 0;
+    int globalCommissions = 0;
+    String tel;
+    String mnt;
+    Bundle extras ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +59,42 @@ public class VendreActivity extends AppCompatActivity {
         inflater = (LayoutInflater)getApplicationContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
 
+        if (extras != null) {
+            if(extras.getString("globalCaution") != null){
+                globalCaution = Integer.parseInt(extras.getString("globalCaution"));
+                globalCommissions = Integer.parseInt(extras.getString("globalCommissions"));
+
+                TextView caution = (TextView) findViewById(R.id.accountAmount);
+                TextView commissions= (TextView) findViewById(R.id.commissions);
+
+                caution.setText("Caution : "+globalCaution);
+                commissions.setText("Commissions : "+ globalCommissions);
+            }else{
+                caution();
+            }
+        }else
+            caution();
+
 
     }
 
+/*    @Override
+    protected void onStart() {
+        super.onStart();
+        extras = getIntent().getExtras();
+        if (extras != null) {
+            if(extras.getString("globalCaution") != null){
+                globalCaution = Integer.parseInt(extras.getString("globalCaution"));
+                globalCommissions = Integer.parseInt(extras.getString("globalCommissions"));
+            }
+        }
+    }
+
+*/
+
     public  void salling(View view){
-        String tel = telEdit.getText().toString();
-        String mnt = montantEdit.getText().toString();
+        tel = telEdit.getText().toString();
+        mnt = montantEdit.getText().toString();
         String type = "";
 
         if(Pattern.matches("^77[0-9]{7}",tel) || Pattern.matches("^78[0-9]{7}",tel)){
@@ -133,6 +170,9 @@ public class VendreActivity extends AppCompatActivity {
 
                 Intent myIntent = new Intent(VendreActivity.this,LoadingActivity.class);
                 myIntent.putExtra("request",response);
+                myIntent.putExtra("caution",globalCaution);
+                myIntent.putExtra("commissions",globalCommissions);
+                myIntent.putExtra("montant",Integer.parseInt(mnt));
                 startActivity(myIntent);
             }
         }, new Response.ErrorListener() {
@@ -154,17 +194,31 @@ public class VendreActivity extends AppCompatActivity {
         Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
     }
 
-    public void  accountAmountHandle(String requestUrl, final Map<String, String> postMap) {
+    public void  cautionHandle(final String requestUrl, final Map<String, String> postMap) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Volley Result", "=============>" + response); //the response contains the result from the server, a json string or any other object returned by your server
+                Log.e("Volley Result: ", "=============>" + response); //the response contains the result from the server, a json string or any other object returned by your server
                 //builder.setTitle("response");
                 //builder.setMessage(response);
                 //builder.create().show();
-                TextView accountAmount = (TextView) findViewById(R.id.accountAmount);
-                accountAmount.setText("Caution : "+response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    TextView caution = (TextView) findViewById(R.id.accountAmount);
+                    TextView commissions= (TextView) findViewById(R.id.commissions);
+                    globalCaution  =  Integer.parseInt((String) jsonObject.get("caution"));
+                    Log.e("Volley Result:Con", "=============>" + jsonObject.getString("commissions")); //the response contains the result from the server, a json string or any other object returned by your server
+
+                    if((jsonObject.getString("commissions")).toString().compareTo("null")!=0)
+                        globalCommissions  =  Integer.parseInt((String) jsonObject.get("commissions"));
+                    else
+                        globalCommissions = 0;
+                    caution.setText("Caution : "+globalCaution);
+                    commissions.setText("Commissions : "+ globalCommissions);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -182,13 +236,12 @@ public class VendreActivity extends AppCompatActivity {
         Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
     }
 
-    public void  accountAmount()
+    public void  caution()
     {
         Map<String, String> postMap = new HashMap<>();
         postMap.put("token",tokenFinal);
 
-        salleCresh(requestUrl,postMap);
-        accountAmountHandle(requestUrl, postMap);
+        cautionHandle(requestUrlCaution, postMap);
     }
 
     public  void  logoutHandle (String requestUrl, final Map<String, String> postMap) {

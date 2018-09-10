@@ -58,6 +58,11 @@ public class HistoriqueActivity extends AppCompatActivity {
     AlertDialog connexionDialog;
     String lastID;
 
+    Bundle extras ;
+    int globalCommissions = 0;
+    int globalCaution = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +78,20 @@ public class HistoriqueActivity extends AppCompatActivity {
 
         history = new JSONArray();
 
+        extras = getIntent().getExtras();
+        if (extras != null) {
+
+            globalCaution = Integer.parseInt(extras.getString("globalCaution"));
+            globalCommissions = Integer.parseInt(extras.getString("globalCommissions"));
+        }
 
         history();
     }
 
     public  void  gotoVente(View v){
         Intent myIntent = new Intent(HistoriqueActivity.this,VendreActivity.class);
+        myIntent.putExtra("globalCommissions",globalCommissions);
+        myIntent.putExtra("globalCommissions",globalCommissions);
         startActivity(myIntent);
     }
 

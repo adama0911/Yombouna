@@ -30,6 +30,9 @@ public class LoadingActivity extends AppCompatActivity {
     final String requestUrl = " http://51.254.200.129/backendprod/horsSentiersBattus/scripts/airtime/verifierReponse.php";
     AlertDialog.Builder builder;
     String tokenFinal = "4cd6526371c082310bb1ff05affe63eb3f84ea457";
+    int globalCommissions = 0;
+    int globalCaution = 0;
+    int mnt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,10 @@ public class LoadingActivity extends AppCompatActivity {
         if (extras != null) {
             Log.d("extras","=======================+>extras");
             resquest = extras.getString("request");
+            globalCaution = Integer.parseInt(extras.getString("globalCaution"));
+            globalCommissions = Integer.parseInt(extras.getString("globalCommissions"));
+            mnt = Integer.parseInt(extras.getString("montant"));
+
             //The key argument here must match that used in the other activity
 
             JSONObject json = new JSONObject();
@@ -108,7 +115,12 @@ public class LoadingActivity extends AppCompatActivity {
 
                if(response.compareTo("1")==1){
                         myTimer.cancel();
+                        globalCommissions = (int) (globalCommissions + (mnt * 0.04));
+                        globalCaution = (int) (globalCaution - mnt);
+
                         Intent myIntent = new Intent(LoadingActivity.this,EndActivity.class);
+                        myIntent.putExtra("globalCommissions",globalCommissions);
+                        myIntent.putExtra("globalCommissions",globalCommissions);
                         startActivity(myIntent);
                }
                else   if(!(response.compareTo("1") ==1 || response.compareTo("-1") ==1)){

@@ -72,15 +72,32 @@
         android:gravity="right"
         >
 
-        <TextView
+        <LinearLayout
             android:layout_width="250dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:gravity="left"
-            android:text="100.000"
-            android:paddingTop="15dp"
-            android:textColor="#36A9E0"
-            android:id="@+id/accountAmount"/>
+            android:paddingTop="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/accountAmount"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="100.000"
+                android:textColor="@color/red"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/commissions"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="100.000"
+                android:textColor="@color/red"
+                android:textSize="18sp" />
+        </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
