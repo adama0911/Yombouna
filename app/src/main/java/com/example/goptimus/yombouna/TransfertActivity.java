@@ -1,24 +1,19 @@
 package com.example.goptimus.yombouna;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TableRow;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -28,41 +23,84 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.zip.Inflater;
 
-public class VendreActivity extends AppCompatActivity {
+public class TransfertActivity extends AppCompatActivity {
+
     final String requestUrl = "http://51.254.200.129/backendprod/horsSentiersBattus/scripts/airtime/airtime.php";
     final String requestUrlCaution = "http://51.254.200.129/backendprod/horsSentiersBattus/scripts/airtime/airtimeCaution.php";
-    AlertDialog.Builder builder;
-    EditText telEdit;
-    EditText montantEdit;
-    Button valider;
-    LayoutInflater inflater;
+
     String tokenFinal = "4cd6526371c082310bb1ff05affe63eb3f84ea457";
-    int globalCaution = 0;
-    int globalCommissions = 0;
-    String tel;
-    String mnt;
+
+    private final JSONObject servicesNumbers = new JSONObject();
+    LayoutInflater inflater;
+    AlertDialog.Builder builder;
+
     Bundle extras;
 
+    int globalCaution = 0;
+    int globalCommissions = 0;
+
+    Spinner serviceEdit;
+    EditText telEdit;
+    EditText mntEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendre);
+        setContentView(R.layout.activity_transfert);
 
-        telEdit = (EditText) findViewById(R.id.telephoneEdit);
-        montantEdit = (EditText) findViewById(R.id.montantEdit);
-        valider = (Button) findViewById(R.id.validerSalleEdit);
         builder = new AlertDialog.Builder(this);
         inflater = (LayoutInflater) getApplicationContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
+
+        Spinner spinner = (Spinner) findViewById(R.id.serviceEdit);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.services, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+            {
+                Object item = parent.getItemAtPosition(pos);
+                String serv = item.toString();
+                Log.d("Log", "=================+++>>>>"+ serv.toLowerCase());
+                try {
+                    if(servicesNumbers.has(serv.toLowerCase())){
+                        Log.d("Log", "--------------------->>"+ servicesNumbers.toString());
+                        String number = servicesNumbers.getString(serv.toLowerCase());
+                        EditText tel = (EditText) findViewById(R.id.numtEdit);
+                        tel.setText(number);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("it works...   ");
+
+            }
+
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+
+        try {
+            getServiceNumber();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if (extras != null) {
             if (extras.getString("globalCaution") != null) {
@@ -79,81 +117,39 @@ public class VendreActivity extends AppCompatActivity {
             }
         } else
             caution();
+
+        serviceEdit = (Spinner) this.findViewById(R.id.serviceEdit);
+        telEdit =   (EditText) this.findViewById(R.id.numtEdit);
+        mntEdit =   (EditText) this.findViewById(R.id.numtEdit);
     }
 
-/*
-    @Override
-    protected void onStart() {
-        super.onStart();
-        extras = getIntent().getExtras();
-        if (extras != null) {
-            if(extras.getString("globalCaution") != null){
-                globalCaution = Integer.parseInt(extras.getString("globalCaution"));
-                globalCommissions = Integer.parseInt(extras.getString("globalCommissions"));
-            }
-        }
-    }
-*/
-
-    public void salling(View view) {
-        tel = telEdit.getText().toString();
-        mnt = montantEdit.getText().toString();
-        String type = "";
-
-        if (Pattern.matches("^77[0-9]{7}", tel) || Pattern.matches("^78[0-9]{7}", tel)) {
-            type = "ceddo";
-        } else if (Pattern.matches("^76[0-9]{7}", tel)) {
-            type = "izi";
-        } else if (Pattern.matches("^70[0-9]{7}", tel)) {
-            type = "yakalma";
-        } else {
-            builder.setTitle("Erreur");
-            builder.setMessage("Votre numero est incorrect !");
-            builder.create().show();
-            return;
-        }
-
-        if (Integer.parseInt(mnt) <= 99) {
-            builder.setTitle("Erreur");
-            builder.setMessage("Votre montant est incorrect !");
-            builder.create().show();
-            return;
-        }
-
-        JSONObject json = new JSONObject();
-        String requestparam = tel + "/" + mnt;
-        try {
-            json.put("requestParam", requestparam);
-            json.put("tokenParam", tokenFinal);
-            json.put("type", type);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String requestParam = json.toString();
-
-        Log.d("Salling", "=========>" + "Tel :" + telEdit.getText() + " montant : " + montantEdit.getText());
-        Map<String, String> postMap = new HashMap<>();
-        postMap.put("requestParam", requestParam);
-
-        salleCresh(requestUrl, postMap);
+    public  void getServiceNumber () throws JSONException {
+        servicesNumbers.put("orange money",776537639);
+        servicesNumbers.put("tigo cash",765093421);
+        servicesNumbers.put("wizall",704098456);
+        servicesNumbers.put("e-money", 713445676);
     }
 
-    public void gotoHistory(View v) {
-        Intent myIntent = new Intent(VendreActivity.this, HistoriqueActivity.class);
+    public  void transfertHistry (View view){
+        Intent myIntent = new Intent(TransfertActivity.this,TransfertHistoryActivity.class);
         startActivity(myIntent);
     }
 
-    public void logout(View view) {
-        Intent myIntent = new Intent(VendreActivity.this, AuthActivity.class);
-        startActivity(myIntent);
 
-       /* Map<String, String> postMap = new HashMap<>();
-        postMap.put("token",tokenFinal);*/
+    public void transfort(View view){
+        String service =  (serviceEdit.getSelectedItem()).toString();
+        String tel     =  (telEdit.getText()).toString();
+        String montant =  (mntEdit.getText()).toString();
+
+        Map<String,String> postMap = new HashMap<>();
+        postMap.put("service",service);
+        postMap.put("telephone",tel);
+        postMap.put("montant",montant);
+
+        transfortHandle(requestUrlCaution, postMap);
     }
 
-    public void salleCresh(String requestUrl, final Map<String, String> postMap) {
+    public void transfortHandle(String requestUrl, final Map<String, String> postMap) {
 
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.saverequest, null);
         builder.setView(view);
@@ -169,18 +165,17 @@ public class VendreActivity extends AppCompatActivity {
                 //builder.create().show();
                 alert.cancel();
 
-                Intent myIntent = new Intent(VendreActivity.this, LoadingActivity.class);
+                Intent myIntent = new Intent(TransfertActivity.this, LoadingActivity.class);
                 myIntent.putExtra("request", response);
                 myIntent.putExtra("caution", globalCaution);
                 myIntent.putExtra("commissions", globalCommissions);
-                myIntent.putExtra("montant", Integer.parseInt(mnt));
                 startActivity(myIntent);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
-                Intent myIntent = new Intent(VendreActivity.this, ErrorActivity.class);
+                Intent myIntent = new Intent(TransfertActivity.this, ErrorActivity.class);
                 startActivity(myIntent);
             }
         }) {
@@ -194,6 +189,7 @@ public class VendreActivity extends AppCompatActivity {
         //make the request to your server as indicated in your request url
         Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
     }
+
 
     public void cautionHandle(final String requestUrl, final Map<String, String> postMap) {
 
@@ -243,35 +239,4 @@ public class VendreActivity extends AppCompatActivity {
 
         cautionHandle(requestUrlCaution, postMap);
     }
-
-    public void logoutHandle(String requestUrl, final Map<String, String> postMap) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e("Volley Result", "=============>" + response); //the response contains the result from the server, a json string or any other object returned by your server
-                //builder.setTitle("response");
-                //builder.setMessage(response);
-                //builder.create().show();
-                Intent myIntent = new Intent(VendreActivity.this, AuthActivity.class);
-                startActivity(myIntent);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //..... Add as many key value pairs in the map as necessary for your request
-                return postMap;
-            }
-        };
-        //make the request to your server as indicated in your request url
-        Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
-    }
-
-
-
 }

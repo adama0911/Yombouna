@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VendreActivity"
+    tools:context=".TransfertActivity"
     android:orientation="vertical"
     >
     <LinearLayout
@@ -22,22 +22,24 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_gravity="center"
-            android:id="@+id/saleMenu">
+            android:id="@+id/transfertMenu"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/sale"
+                android:src="@drawable/exchange1"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vente"
+                android:text="Transfert"
                 android:gravity="center"
                 android:textColor="#ffff"
                 android:textSize="20dp"
                 android:fontFamily="@font/caviardreamsbold"
+                android:layout_marginLeft="15dp"
                 />
         </LinearLayout>
         <LinearLayout
@@ -48,7 +50,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:id="@+id/historyMenu"
-            android:onClick="gotoHistory">
+            android:onClick="transfertHistry">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -80,30 +82,36 @@
             android:paddingTop="5dp"
             android:orientation="vertical"
             >
-            <TextView
-                android:id="@+id/accountAmount"
+
+            <LinearLayout
                 android:layout_width="250dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:gravity="center"
-                android:text="100.000"
-                android:textColor="@color/red"
-                android:textSize="18sp"
-                android:background="@drawable/bg_solde"
-                android:layout_marginTop="25dp"
-                />
-            <TextView
-                android:id="@+id/commissions"
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:gravity="center"
-                android:text="100.000"
-                android:textColor="@color/red"
-                android:textSize="18sp"
-                android:background="@drawable/bg_solde"
-                android:layout_marginTop="5dp"
-                />
+                android:paddingTop="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/accountAmount"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:gravity="center"
+                    android:text="100.000"
+                    android:textColor="@color/red"
+                    android:textSize="18sp"
+                    android:background="@drawable/bg_solde"
+                    android:layout_marginTop="25dp"/>
+                <TextView
+                    android:id="@+id/commissions"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:gravity="center"
+                    android:text="100.000"
+                    android:textColor="@color/red"
+                    android:textSize="18sp"
+                    android:background="@drawable/bg_solde"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
         </LinearLayout>
 
         <ImageView
@@ -113,7 +121,23 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:id="@+id/imgLogout"
-            android:onClick="logout"/>
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Service"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/serviceEdit"
+            android:fontFamily="@font/caviardreamsbold"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -128,8 +152,9 @@
             android:layout_marginTop="50dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:id="@+id/telephoneEdit"
-            android:fontFamily="@font/caviardreamsbold"/>
+            android:id="@+id/numtEdit"
+            android:fontFamily="@font/caviardreamsbold"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -163,7 +188,6 @@
             android:background="@drawable/customizebutton"
             android:textColor="#ffff"
             android:id="@+id/validerSalleEdit"
-            android:fontFamily="@font/caviardreamsbold"
-            android:onClick="salling"/>
+            android:fontFamily="@font/caviardreamsbold" />
     </LinearLayout>
 </LinearLayout>

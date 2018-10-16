@@ -3,6 +3,9 @@
     package="com.example.goptimus.yombouna">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,12 +21,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VendreActivity" />
+        <activity
+            android:name=".VendreActivity"
+            android:parentActivityName=".VendreActivity" />
         <activity android:name=".HistoriqueActivity" />
         <activity android:name=".LoadingActivity" />
-        <activity android:name=".EndActivity" />
-        <activity android:name=".ErrorActivity" />
-        <activity android:name=".ErrConnexionActivity"></activity>
+        <activity
+            android:name=".EndActivity"
+            android:parentActivityName=".LoadingActivity" />
+        <activity
+            android:name=".ErrorActivity"
+            android:parentActivityName=".AuthActivity" />
+        <activity
+            android:name=".ErrConnexionActivity"
+            android:parentActivityName=".AuthActivity" />
+        <activity
+            android:name=".UtileActivity"
+            android:parentActivityName=".UtileActivity" />
+        <activity
+            android:name=".TransfertActivity"
+            android:parentActivityName=".UtileActivity" />
+        <activity
+            android:name=".TransfertHistoryActivity"
+            android:parentActivityName=".TransfertActivity" />
+        <activity android:name=".PaimentActivity" />
+        <activity android:name=".ScannerActivity"></activity>
     </application>
 
 </manifest>
