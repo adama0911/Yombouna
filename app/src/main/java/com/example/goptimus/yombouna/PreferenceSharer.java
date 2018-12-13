@@ -12,7 +12,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class PreferenceSharer {
 
-    public Context context ;
+    public Context context;
 
     public PreferenceSharer(Context context){
         this.context = context ;

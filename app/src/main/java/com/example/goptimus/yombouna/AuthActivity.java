@@ -62,7 +62,7 @@ public class AuthActivity extends AppCompatActivity {
 
     }
 
-
+    // valider l'autentification
     public void authentification(View view) {
         showloadNext();
         Button v = (Button) findViewById(R.id.validAuth);
@@ -93,6 +93,7 @@ public class AuthActivity extends AppCompatActivity {
         login(requestUrl, postMap);
     }
 
+    // Login ajax function
     public void login(String requestUrl, final Map<String, String> postMap) {
 
 
@@ -177,19 +178,19 @@ public class AuthActivity extends AppCompatActivity {
     public String getDeviceIMEI() {
         TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
+            //   TODO: Consider calling
+            //   ActivityCompat#requestPermissions
+            //   here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            //   int[] grantResults)
+            //   to handle the case where the user grants the permission. See the documentation
+            //   for ActivityCompat#requestPermissions for more details.
             return "Permission not garanted";
         }
         return telephonyManager.getDeviceId();
     }
 
-
+    // Fonction de as
     String toSha1( String toHash )
     {
         String hash = null;
